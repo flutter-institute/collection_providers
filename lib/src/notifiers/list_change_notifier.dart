@@ -2,8 +2,7 @@ import 'dart:collection';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
-
-import '../pausable_change_notifier.dart';
+import 'package:collection_providers/collection_providers.dart';
 
 /// An implementation of [ChangeNotifier] that allows implementers to interact
 /// with this provider as if it were a [Map] and be notified when any changes
@@ -18,9 +17,13 @@ import '../pausable_change_notifier.dart';
 ///
 /// [T] is the type of the Value to be used by this map. It can be any subclass
 /// of [Object] and has no special requirements.
-class ListProvider<T> extends ChangeNotifier
-    with PausableChangeNotifier, ListMixin<T> {
-  List<T> _list = [];
+class ListChangeNotifier<T> extends ChangeNotifier
+    with CollectionChangeNotifier, ListMixin<T> {
+  List<T> _list;
+
+  ListChangeNotifier([List<T> backingList]) {
+    _list = List<T>.from(backingList ?? []);
+  }
 
   /// The number of objects in this list.
   ///
@@ -32,6 +35,7 @@ class ListProvider<T> extends ChangeNotifier
   }
 
   /// Changes the length of this list.
+  /// Does not notify listeners.
   ///
   /// If [newLength] is greater than the current length, entries are initialized to `null`.
   @override
@@ -54,6 +58,7 @@ class ListProvider<T> extends ChangeNotifier
   void operator []=(int index, T value) {
     assert(_debugAssertNotDisposed());
     _list[index] = value;
+    notifyListeners();
   }
 
   /// Appends all objects of [iterable] to the end of the list.
@@ -63,9 +68,8 @@ class ListProvider<T> extends ChangeNotifier
   @override
   void addAll(Iterable<T> iterable) {
     assert(_debugAssertNotDisposed());
-    pauseNotifications(() {
-      super.addAll(iterable);
-    }, true);
+    _list.addAll(iterable);
+    notifyListeners();
   }
 
   /// Removes all objects from this list that satisfy [test].
@@ -75,9 +79,8 @@ class ListProvider<T> extends ChangeNotifier
   @override
   void removeWhere(bool Function(T element) test) {
     assert(_debugAssertNotDisposed());
-    pauseNotifications(() {
-      super.removeWhere(test);
-    }, true);
+    _list.removeWhere(test);
+    notifyListeners();
   }
 
   /// Removes all objects from the list that fail to satisfy [test].
@@ -87,9 +90,8 @@ class ListProvider<T> extends ChangeNotifier
   @override
   void retainWhere(bool Function(T element) test) {
     assert(_debugAssertNotDisposed());
-    pauseNotifications(() {
-      super.retainWhere(test);
-    }, true);
+    _list.retainWhere(test);
+    notifyListeners();
   }
 
   /// Sorts this list according to the order specified by the [compare] function.
@@ -100,9 +102,8 @@ class ListProvider<T> extends ChangeNotifier
   @override
   void sort([int Function(T a, T b) compare]) {
     assert(_debugAssertNotDisposed());
-    pauseNotifications(() {
-      super.sort(compare);
-    }, true);
+    _list.sort(compare);
+    notifyListeners();
   }
 
   /// Shuffles the elements of this list randomly.
@@ -110,9 +111,8 @@ class ListProvider<T> extends ChangeNotifier
   @override
   void shuffle([Random random]) {
     assert(_debugAssertNotDisposed());
-    pauseNotifications(() {
-      super.shuffle(random);
-    }, true);
+    _list.shuffle(random);
+    notifyListeners();
   }
 
   /// Removes the objects in the range [start] inclusive to [end] exclusive.
@@ -125,9 +125,8 @@ class ListProvider<T> extends ChangeNotifier
   @override
   void removeRange(int start, int end) {
     assert(_debugAssertNotDisposed());
-    pauseNotifications(() {
-      super.removeRange(start, end);
-    }, true);
+    _list.removeRange(start, end);
+    notifyListeners();
   }
 
   /// Sets the objects in the range [start] inclusive to [end] exclusive to the
@@ -141,9 +140,8 @@ class ListProvider<T> extends ChangeNotifier
   @override
   void fillRange(int start, int end, [T fill]) {
     assert(_debugAssertNotDisposed());
-    pauseNotifications(() {
-      super.fillRange(start, end, fill);
-    }, true);
+    _list.fillRange(start, end, fill);
+    notifyListeners();
   }
 
   /// Copies the objects of [iterable], skipping [skipCount] object first, into
@@ -166,13 +164,12 @@ class ListProvider<T> extends ChangeNotifier
   @override
   void setRange(int start, int end, Iterable<T> iterable, [int skipCount = 0]) {
     assert(_debugAssertNotDisposed());
-    pauseNotifications(() {
-      super.setRange(start, end, iterable, skipCount);
-    }, true);
+    _list.setRange(start, end, iterable, skipCount);
+    notifyListeners();
   }
 
   /// Removes the objects in the range [start] inclusive to [end] exclusive and
-  /// inserts the contes of [newContents] in its place.
+  /// inserts the contents of [newContents] in its place.
   /// Listeners are notified after all the objects have been replaced.
   ///
   /// The provided range, given by [start] to [end], must be valid.
@@ -182,9 +179,8 @@ class ListProvider<T> extends ChangeNotifier
   @override
   void replaceRange(int start, int end, Iterable<T> newContents) {
     assert(_debugAssertNotDisposed());
-    pauseNotifications(() {
-      super.replaceRange(start, end, newContents);
-    }, true);
+    _list.replaceRange(start, end, newContents);
+    notifyListeners();
   }
 
   /// Insert [element] at the position [index] in this list.
@@ -197,9 +193,8 @@ class ListProvider<T> extends ChangeNotifier
   @override
   void insert(int index, T element) {
     assert(_debugAssertNotDisposed());
-    pauseNotifications(() {
-      super.insert(index, element);
-    }, true);
+    _list.insert(index, element);
+    notifyListeners();
   }
 
   /// Removes the object at position [index] from the list.
@@ -214,9 +209,9 @@ class ListProvider<T> extends ChangeNotifier
   @override
   T removeAt(int index) {
     assert(_debugAssertNotDisposed());
-    return pauseNotifications(() {
-      return super.removeAt(index);
-    }, true);
+    final result = _list.removeAt(index);
+    notifyListeners();
+    return result;
   }
 
   /// Inserts all objects of [iterable] at position [index] in this list.
@@ -229,9 +224,8 @@ class ListProvider<T> extends ChangeNotifier
   @override
   void insertAll(int index, Iterable<T> iterable) {
     assert(_debugAssertNotDisposed());
-    pauseNotifications(() {
-      super.insertAll(index, iterable);
-    }, true);
+    _list.insertAll(index, iterable);
+    notifyListeners();
   }
 
   /// Overwrites objects of `this` with the objects of [iterable] start at
@@ -250,9 +244,8 @@ class ListProvider<T> extends ChangeNotifier
   @override
   void setAll(int index, Iterable<T> iterable) {
     assert(_debugAssertNotDisposed());
-    pauseNotifications(() {
-      super.setAll(index, iterable);
-    }, true);
+    _list.setAll(index, iterable);
+    notifyListeners();
   }
 
   /// Discards the internal resources used by the object.

@@ -1,9 +1,11 @@
 library collection_providers;
 
-export 'src/pausable_change_notifier.dart';
-export 'src/list/list_provider.dart';
-export 'src/map/map_provider.dart';
+export 'src/collection_change_notifier.dart';
+export 'src/collection_consumer.dart';
+export 'src/collection_provider.dart';
+export 'src/notifiers/list_change_notifier.dart';
+export 'src/notifiers/set_change_notifier.dart';
+export 'src/notifiers/map_change_notifier.dart';
 
-// TODO add notifiers and consumers
-// TODO add implementations for Queue, Set
+// TODO add implementations for Queue
 // TODO consider if we care about LinkedList and how we want to do it

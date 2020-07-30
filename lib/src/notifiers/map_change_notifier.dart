@@ -1,8 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
-
-import '../pausable_change_notifier.dart';
+import 'package:collection_providers/collection_providers.dart';
 
 /// An implementation of [ChangeNotifier] that allows implementers to interact
 /// with this provider as if it were a [Map] and be notified when any changes
@@ -17,9 +16,13 @@ import '../pausable_change_notifier.dart';
 ///
 /// [T] is the type of the Value to be used by this map. It can be any subclass
 /// of [Object] and has no special requirements.
-class MapProvider<K, T> extends ChangeNotifier
-    with PausableChangeNotifier, MapMixin<K, T> {
-  Map<K, T> _map = {};
+class MapChangeNotifier<K, T> extends ChangeNotifier
+    with CollectionChangeNotifier, MapMixin<K, T> {
+  Map<K, T> _map;
+
+  MapChangeNotifier([Map<K, T> backingMap]) {
+    _map = Map<K, T>.from(backingMap ?? {});
+  }
 
   /// Returns the value for the given [key] or null if [key] is not in the map.
   @override
@@ -89,7 +92,7 @@ class MapProvider<K, T> extends ChangeNotifier
     assert(_debugAssertNotDisposed());
     assert(other != null);
     pauseNotifications(() {
-      super.addAll(other);
+      _map.addAll(other);
     });
     notifyListeners();
   }
@@ -103,7 +106,7 @@ class MapProvider<K, T> extends ChangeNotifier
     assert(_debugAssertNotDisposed());
     assert(update != null);
     pauseNotifications(() {
-      super.updateAll(update);
+      _map.updateAll(update);
     }, true);
   }
 
@@ -120,7 +123,7 @@ class MapProvider<K, T> extends ChangeNotifier
     assert(_debugAssertNotDisposed());
     assert(newEntries != null);
     pauseNotifications(() {
-      super.addEntries(newEntries);
+      _map.addEntries(newEntries);
     }, true);
   }
 
@@ -133,7 +136,7 @@ class MapProvider<K, T> extends ChangeNotifier
     assert(_debugAssertNotDisposed());
     assert(test != null);
     pauseNotifications(() {
-      super.removeWhere(test);
+      _map.removeWhere(test);
     }, true);
   }
 

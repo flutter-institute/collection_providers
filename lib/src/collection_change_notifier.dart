@@ -4,7 +4,7 @@ typedef Future<T> AsyncChangeHandler<T>();
 
 typedef T ChangeHandler<T>();
 
-mixin PausableChangeNotifier on ChangeNotifier {
+mixin CollectionChangeNotifier on ChangeNotifier {
   bool _paused = false;
 
   Future<T> pauseNotificationsAsync<T>(AsyncChangeHandler<T> handler,
