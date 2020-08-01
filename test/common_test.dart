@@ -1,7 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:collection_providers/collection_providers.dart';
 
 void main() {
+  FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.dumpErrorToConsole(details);
+    throw details.exception;
+  };
+
   final models = {
     'ListChangeNotifier': () => ListChangeNotifier(),
     'MapChangeNotifier': () => MapChangeNotifier(),

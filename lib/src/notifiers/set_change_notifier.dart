@@ -3,8 +3,7 @@ import 'dart:collection';
 import 'package:flutter/foundation.dart';
 import 'package:collection_providers/collection_providers.dart';
 
-class SetChangeNotifier<T> extends ChangeNotifier
-    with CollectionChangeNotifier, SetMixin<T> {
+class SetChangeNotifier<T> extends CollectionChangeNotifier with SetMixin<T> {
   Set<T> _set;
 
   SetChangeNotifier([Set<T> backingSet]) {
@@ -35,9 +34,9 @@ class SetChangeNotifier<T> extends ChangeNotifier
   /// Equivalent to adding each element in [elements] using [add].
   @override
   void addAll(Iterable<T> elements) {
-    pauseNotifications(() {
-      _set.addAll(elements);
-    }, true);
+    assert(_debugAssertNotDisposed());
+    _set.addAll(elements);
+    notifyListeners();
   }
 
   /// Returns `true` if [value] is in the set.

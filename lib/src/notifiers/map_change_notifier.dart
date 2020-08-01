@@ -16,8 +16,8 @@ import 'package:collection_providers/collection_providers.dart';
 ///
 /// [T] is the type of the Value to be used by this map. It can be any subclass
 /// of [Object] and has no special requirements.
-class MapChangeNotifier<K, T> extends ChangeNotifier
-    with CollectionChangeNotifier, MapMixin<K, T> {
+class MapChangeNotifier<K, T> extends CollectionChangeNotifier
+    with MapMixin<K, T> {
   Map<K, T> _map;
 
   MapChangeNotifier([Map<K, T> backingMap]) {
@@ -91,9 +91,7 @@ class MapChangeNotifier<K, T> extends ChangeNotifier
   void addAll(Map<K, T> other) {
     assert(_debugAssertNotDisposed());
     assert(other != null);
-    pauseNotifications(() {
-      _map.addAll(other);
-    });
+    _map.addAll(other);
     notifyListeners();
   }
 
@@ -105,9 +103,8 @@ class MapChangeNotifier<K, T> extends ChangeNotifier
   void updateAll(T Function(K key, T value) update) {
     assert(_debugAssertNotDisposed());
     assert(update != null);
-    pauseNotifications(() {
-      _map.updateAll(update);
-    }, true);
+    _map.updateAll(update);
+    notifyListeners();
   }
 
   /// Adds all the key/value pairs of [newEntries] to othis map.
@@ -122,9 +119,8 @@ class MapChangeNotifier<K, T> extends ChangeNotifier
   void addEntries(Iterable<MapEntry<K, T>> newEntries) {
     assert(_debugAssertNotDisposed());
     assert(newEntries != null);
-    pauseNotifications(() {
-      _map.addEntries(newEntries);
-    }, true);
+    _map.addEntries(newEntries);
+    notifyListeners();
   }
 
   /// Remove all entries of this map that satisfy [test]
@@ -135,9 +131,8 @@ class MapChangeNotifier<K, T> extends ChangeNotifier
   void removeWhere(bool Function(K key, T value) test) {
     assert(_debugAssertNotDisposed());
     assert(test != null);
-    pauseNotifications(() {
-      _map.removeWhere(test);
-    }, true);
+    _map.removeWhere(test);
+    notifyListeners();
   }
 
   /// Discards the internal resources used by the object.

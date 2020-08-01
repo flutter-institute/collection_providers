@@ -1,7 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:collection_providers/collection_providers.dart';
 
 void main() {
+  FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.dumpErrorToConsole(details);
+    throw details.exception;
+  };
+
   group('ListChangeNotifier', () {
     test('copies the backing list', () {
       final backer = [1, 2, 3];
@@ -64,6 +70,14 @@ void main() {
     });
 
     group('Bulk Actions', () {
+      test('notifies once for clear', () {
+        final model = ListChangeNotifier([1, 2, 3]);
+        model.addListener(expectAsync0(() {}, count: 1));
+
+        model.clear();
+        expect(model, isEmpty);
+      });
+
       test('notifies once for addAll', () {
         final model = ListChangeNotifier([1, 2, 3]);
         model.addListener(expectAsync0(() {}, count: 1));
@@ -158,6 +172,86 @@ void main() {
       });
     });
 
-    group('Pausable', () {});
+    group('Pausable', () {
+      test('does not notify when paused synchronous', () {
+        final model = ListChangeNotifier([1, 2, 3]);
+        model.addListener(expectAsync0(() {}, count: 0));
+
+        model.pauseNotifications(() {
+          model.add(4);
+          model.addAll([5, 6]);
+          model.remove(3);
+        });
+
+        expect(model, hasLength(5));
+      });
+
+      test('notifies if the flag is set synchronous', () {
+        final model = ListChangeNotifier([1, 2, 3]);
+        model.addListener(expectAsync0(() {}, count: 1));
+
+        model.pauseNotifications(() {
+          model.add(4);
+          model.addAll([5, 6]);
+          model.remove(3);
+        }, true);
+
+        expect(model, hasLength(5));
+      });
+
+      test('returns a value after pause synchronous', () {
+        final model = ListChangeNotifier([1, 2, 3]);
+        model.addListener(expectAsync0(() {}, count: 1));
+
+        final wasRemoved = model.pauseNotifications(() {
+          model.add(4);
+          model.addAll([5, 6]);
+          return model.remove(3);
+        }, true);
+
+        expect(wasRemoved, isTrue);
+        expect(model, hasLength(5));
+      });
+
+      test('does not notify when pause asynchronous', () async {
+        final model = ListChangeNotifier([1, 2, 3]);
+        model.addListener(expectAsync0(() {}, count: 0));
+
+        await model.pauseNotificationsAsync(() async {
+          model.add(4);
+          model.addAll([5, 6]);
+          model.remove(3);
+        });
+
+        expect(model, hasLength(5));
+      });
+
+      test('notifies if the flag is set asynchronous', () async {
+        final model = ListChangeNotifier([1, 2, 3]);
+        model.addListener(expectAsync0(() {}, count: 1));
+
+        await model.pauseNotificationsAsync(() async {
+          model.add(4);
+          model.addAll([5, 6]);
+          model.remove(3);
+        }, true);
+
+        expect(model, hasLength(5));
+      });
+
+      test('returns a value after pause asynchronous', () async {
+        final model = ListChangeNotifier([1, 2, 3]);
+        model.addListener(expectAsync0(() {}, count: 1));
+
+        final wasRemoved = await model.pauseNotificationsAsync(() async {
+          model.add(4);
+          model.addAll([5, 6]);
+          return model.remove(3);
+        }, true);
+
+        expect(wasRemoved, isTrue);
+        expect(model, hasLength(5));
+      });
+    });
   });
 }

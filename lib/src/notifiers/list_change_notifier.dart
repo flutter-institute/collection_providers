@@ -17,8 +17,7 @@ import 'package:collection_providers/collection_providers.dart';
 ///
 /// [T] is the type of the Value to be used by this map. It can be any subclass
 /// of [Object] and has no special requirements.
-class ListChangeNotifier<T> extends ChangeNotifier
-    with CollectionChangeNotifier, ListMixin<T> {
+class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   List<T> _list;
 
   ListChangeNotifier([List<T> backingList]) {
@@ -58,6 +57,15 @@ class ListChangeNotifier<T> extends ChangeNotifier
   void operator []=(int index, T value) {
     assert(_debugAssertNotDisposed());
     _list[index] = value;
+    notifyListeners();
+  }
+
+  /// Clear all objects from the list.
+  /// Listeners are notified after the list is cleared.
+  @override
+  void clear() {
+    assert(_debugAssertNotDisposed());
+    super.clear();
     notifyListeners();
   }
 
