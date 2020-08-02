@@ -9,6 +9,12 @@ void main() {
   };
 
   group('ListChangeNotifier', () {
+    test('adding after dispose throws assertion', () {
+      final model = ListChangeNotifier();
+      model.dispose();
+      expect(() => model.add('test'), throwsAssertionError);
+    });
+
     test('copies the backing list', () {
       final backer = [1, 2, 3];
       final model = ListChangeNotifier(backer);
@@ -86,6 +92,11 @@ void main() {
         expect(model, hasLength(6));
       });
 
+      test('throws assertion with addAll(null)', () {
+        final model = ListChangeNotifier();
+        expect(() => model.addAll(null), throwsAssertionError);
+      });
+
       test('notifies once for removeWhere', () {
         final model = ListChangeNotifier([1, 2, 3]);
         model.addListener(expectAsync0(() {}, count: 1));
@@ -94,12 +105,24 @@ void main() {
         expect(model, hasLength(1));
       });
 
+      test('throws assertion with removeWhere(null)', () {
+        final model = ListChangeNotifier();
+        // ignore: null_closures
+        expect(() => model.removeWhere(null), throwsAssertionError);
+      });
+
       test('notifies once for retainWhere', () {
         final model = ListChangeNotifier([1, 2, 3]);
         model.addListener(expectAsync0(() {}, count: 1));
 
         model.retainWhere((element) => element > 2);
         expect(model, hasLength(1));
+      });
+
+      test('throws assertion with retainWhere(null)', () {
+        final model = ListChangeNotifier();
+        // ignore: null_closures
+        expect(() => model.retainWhere(null), throwsAssertionError);
       });
 
       test('notifies once for sort', () {
@@ -117,7 +140,7 @@ void main() {
         model.shuffle();
       });
 
-      test('notifies once for removeRnage', () {
+      test('notifies once for removeRange', () {
         final model = ListChangeNotifier([1, 2, 3, 4, 5]);
         model.addListener(expectAsync0(() {}, count: 1));
 
@@ -144,6 +167,11 @@ void main() {
         expect(model, containsAllInOrder([1, 9, 10, 4, 5]));
       });
 
+      test('throws assertion with setRange(null)', () {
+        final model = ListChangeNotifier();
+        expect(() => model.setRange(0, 2, null), throwsAssertionError);
+      });
+
       test('notifies once for replaceRange', () {
         final model = ListChangeNotifier([1, 2, 3, 4, 5]);
         model.addListener(expectAsync0(() {}, count: 1));
@@ -151,6 +179,11 @@ void main() {
         model.replaceRange(1, 3, [8, 9, 10]);
         expect(model, hasLength(6));
         expect(model, containsAllInOrder([1, 8, 9, 10, 4, 5]));
+      });
+
+      test('throws assertion with replaceRange(null)', () {
+        final model = ListChangeNotifier();
+        expect(() => model.replaceRange(0, 3, null), throwsAssertionError);
       });
 
       test('notifies once for insertAll', () {
@@ -162,6 +195,11 @@ void main() {
         expect(model, containsAllInOrder([1, 3, 4, 5, 2]));
       });
 
+      test('throws assertion with insertAll(null)', () {
+        final model = ListChangeNotifier();
+        expect(() => model.insertAll(0, null), throwsAssertionError);
+      });
+
       test('notifies once for setAll', () {
         final model = ListChangeNotifier([1, 2, 3, 4, 5]);
         model.addListener(expectAsync0(() {}, count: 1));
@@ -169,6 +207,11 @@ void main() {
         model.setAll(1, [6, 7]);
         expect(model, hasLength(5));
         expect(model, containsAllInOrder([1, 6, 7, 4, 5]));
+      });
+
+      test('throws assertion with setAll(null)', () {
+        final model = ListChangeNotifier();
+        expect(() => model.setAll(0, null), throwsAssertionError);
       });
     });
 

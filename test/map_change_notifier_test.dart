@@ -9,6 +9,12 @@ void main() {
   };
 
   group('MapChangeNotifier', () {
+    test('adding after dispose throws assertion', () {
+      final model = MapChangeNotifier();
+      model.dispose();
+      expect(() => model['test'] = true, throwsAssertionError);
+    });
+
     test('copies the backing map', () {
       final backer = {
         'first': 1,
@@ -88,6 +94,11 @@ void main() {
         expect(model, hasLength(3));
       });
 
+      test('throws assertion if addAll(null)', () {
+        final model = MapChangeNotifier({'test': 4});
+        expect(() => model.addAll(null), throwsAssertionError);
+      });
+
       test('notifies once for updateAll', () {
         final model = MapChangeNotifier({
           'first': 1,
@@ -99,6 +110,11 @@ void main() {
         expect(model, hasLength(2));
         expect(model, containsPair('first', 3));
         expect(model, containsPair('second', 4));
+      });
+
+      test('throws assertion if updateAll(null)', () {
+        final model = MapChangeNotifier({'test': 4});
+        expect(() => model.updateAll(null), throwsAssertionError);
       });
 
       test('notifies once for addEntries', () {
@@ -116,6 +132,11 @@ void main() {
         expect(model, hasLength(4));
       });
 
+      test('throws assertion if addEntries(null)', () {
+        final model = MapChangeNotifier({'test': 4});
+        expect(() => model.addEntries(null), throwsAssertionError);
+      });
+
       test('notifies once for removeWhere', () {
         final model = MapChangeNotifier({
           'first': 1,
@@ -128,6 +149,11 @@ void main() {
         model.removeWhere((key, value) => key == 'first' || value == 3);
         expect(model.keys, containsAllInOrder(['second', 'fourth']));
       });
+    });
+
+    test('throws assertion if removeWhere(null)', () {
+      final model = MapChangeNotifier({'test': 4});
+      expect(() => model.removeWhere(null), throwsAssertionError);
     });
 
     group('Pausable', () {

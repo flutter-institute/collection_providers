@@ -9,6 +9,12 @@ void main() {
   };
 
   group('SetChangeNotifier', () {
+    test('adding after dispose throws assertion', () {
+      final model = SetChangeNotifier();
+      model.dispose();
+      expect(() => model.add('test'), throwsAssertionError);
+    });
+
     test('copies the backing map', () {
       final backer = {1, 2, 3};
       final model = SetChangeNotifier(backer);
@@ -46,6 +52,7 @@ void main() {
 
         model.remove(2);
         expect(model, hasLength(2));
+        expect(model, containsAll([1, 3]));
       });
 
       test('does not notify when a value is removed that is not present', () {
@@ -64,6 +71,7 @@ void main() {
 
         model.addAll([4, 5, 6]);
         expect(model, hasLength(6));
+        expect(model, containsAllInOrder([1, 2, 3, 4, 5, 6]));
       });
 
       test('notifies once for addAll even if duplicates', () {
@@ -74,20 +82,37 @@ void main() {
         expect(model, hasLength(3));
       });
 
+      test('throws assertion if addAll(null)', () {
+        final model = SetChangeNotifier();
+        expect(() => model.addAll(null), throwsAssertionError);
+      });
+
       test('notifies once for removeAll', () {
         final model = SetChangeNotifier({1, 2, 3});
         model.addListener(expectAsync0(() {}, count: 1));
 
         model.removeAll([2, 3, 4]);
         expect(model, hasLength(1));
+        expect(model, contains(1));
+      });
+
+      test('throws assertion if removeAll(null)', () {
+        final model = SetChangeNotifier();
+        expect(() => model.removeAll(null), throwsAssertionError);
       });
 
       test('notifies once for retainAll', () {
-        final model = SetChangeNotifier({1, 2, 3, 4, 5});
+        final model = SetChangeNotifier({1, 2, 4, 3, 5});
         model.addListener(expectAsync0(() {}, count: 1));
 
         model.retainAll([2, 3, 4]);
         expect(model, hasLength(3));
+        expect(model, containsAllInOrder([2, 4, 3]));
+      });
+
+      test('throws assertion if retainAll(null)', () {
+        final model = SetChangeNotifier();
+        expect(() => model.retainAll(null), throwsAssertionError);
       });
 
       test('notifies once for removeWhere', () {
@@ -96,6 +121,13 @@ void main() {
 
         model.removeWhere((element) => element > 3);
         expect(model, hasLength(3));
+        expect(model, containsAllInOrder([1, 2, 3]));
+      });
+
+      test('throws assertion if removeWhere(null)', () {
+        final model = SetChangeNotifier();
+        // ignore: null_closures
+        expect(() => model.removeWhere(null), throwsAssertionError);
       });
 
       test('notifies once for retainWhere', () {
@@ -104,6 +136,13 @@ void main() {
 
         model.retainWhere((element) => element > 3);
         expect(model, hasLength(2));
+        expect(model, containsAllInOrder([4, 5]));
+      });
+
+      test('throws assertion if retainWhere(null)', () {
+        final model = SetChangeNotifier();
+        // ignore: null_closures
+        expect(() => model.retainWhere(null), throwsAssertionError);
       });
 
       test('notifies once for clear', () {
@@ -112,6 +151,33 @@ void main() {
 
         model.clear();
         expect(model, isEmpty);
+      });
+    });
+
+    group('Set Operations', () {
+      test('expected return from lookup', () {
+        final model = SetChangeNotifier({1, 2, 3});
+        expect(model.lookup(3), equals(3));
+        expect(model.lookup(5), isNull);
+      });
+
+      test('expected return from toSet', () {
+        final model = SetChangeNotifier({1, 2, 3});
+        final other = model.toSet();
+
+        expect(other, hasLength(3));
+        expect(other, containsAllInOrder([1, 2, 3]));
+
+        // They can be modified independently
+        model.add(4);
+        expect(model, hasLength(4));
+        expect(model, contains(4));
+        expect(other, hasLength(3));
+
+        other.add(5);
+        expect(other, hasLength(4));
+        expect(other, contains(5));
+        expect(model, hasLength(4));
       });
     });
 

@@ -76,6 +76,7 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   @override
   void addAll(Iterable<T> iterable) {
     assert(_debugAssertNotDisposed());
+    assert(iterable != null);
     _list.addAll(iterable);
     notifyListeners();
   }
@@ -87,6 +88,7 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   @override
   void removeWhere(bool Function(T element) test) {
     assert(_debugAssertNotDisposed());
+    assert(test != null);
     _list.removeWhere(test);
     notifyListeners();
   }
@@ -98,6 +100,7 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   @override
   void retainWhere(bool Function(T element) test) {
     assert(_debugAssertNotDisposed());
+    assert(test != null);
     _list.retainWhere(test);
     notifyListeners();
   }
@@ -172,6 +175,7 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   @override
   void setRange(int start, int end, Iterable<T> iterable, [int skipCount = 0]) {
     assert(_debugAssertNotDisposed());
+    assert(iterable != null);
     _list.setRange(start, end, iterable, skipCount);
     notifyListeners();
   }
@@ -182,11 +186,12 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   ///
   /// The provided range, given by [start] to [end], must be valid.
   /// A range from [start] to [end] is valid if `0 <= start <= end <= len`, where
-  /// `len` ist he list's `length`. The range starts at `start` and has length
+  /// `len` is the list's `length`. The range starts at `start` and has length
   /// `end - start`. An empty range (with `end == start`) is valid.
   @override
   void replaceRange(int start, int end, Iterable<T> newContents) {
     assert(_debugAssertNotDisposed());
+    assert(newContents != null);
     _list.replaceRange(start, end, newContents);
     notifyListeners();
   }
@@ -232,6 +237,7 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   @override
   void insertAll(int index, Iterable<T> iterable) {
     assert(_debugAssertNotDisposed());
+    assert(iterable != null);
     _list.insertAll(index, iterable);
     notifyListeners();
   }
@@ -252,6 +258,7 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   @override
   void setAll(int index, Iterable<T> iterable) {
     assert(_debugAssertNotDisposed());
+    assert(iterable != null);
     _list.setAll(index, iterable);
     notifyListeners();
   }

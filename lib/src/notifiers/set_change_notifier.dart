@@ -35,6 +35,7 @@ class SetChangeNotifier<T> extends CollectionChangeNotifier with SetMixin<T> {
   @override
   void addAll(Iterable<T> elements) {
     assert(_debugAssertNotDisposed());
+    assert(elements != null);
     _set.addAll(elements);
     notifyListeners();
   }
@@ -91,6 +92,7 @@ class SetChangeNotifier<T> extends CollectionChangeNotifier with SetMixin<T> {
   @override
   void removeAll(Iterable<Object> elements) {
     assert(_debugAssertNotDisposed());
+    assert(elements != null);
     _set.removeAll(elements);
     notifyListeners();
   }
@@ -105,6 +107,7 @@ class SetChangeNotifier<T> extends CollectionChangeNotifier with SetMixin<T> {
   @override
   void retainAll(Iterable<Object> elements) {
     assert(_debugAssertNotDisposed());
+    assert(elements != null);
     _set.retainAll(elements);
     notifyListeners();
   }
@@ -114,6 +117,7 @@ class SetChangeNotifier<T> extends CollectionChangeNotifier with SetMixin<T> {
   @override
   void removeWhere(bool Function(T element) test) {
     assert(_debugAssertNotDisposed());
+    assert(test != null);
     _set.removeWhere(test);
     notifyListeners();
   }
@@ -123,6 +127,7 @@ class SetChangeNotifier<T> extends CollectionChangeNotifier with SetMixin<T> {
   @override
   void retainWhere(bool Function(T element) test) {
     assert(_debugAssertNotDisposed());
+    assert(test != null);
     _set.retainWhere(test);
     notifyListeners();
   }
