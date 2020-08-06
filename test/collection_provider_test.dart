@@ -86,6 +86,7 @@ void main() {
     test(
       'throws an assertion error if there is no builder with CollectionConsumer',
       () {
+        // ignore: missing_required_param
         expect(() => CollectionConsumer(), throwsAssertionError);
       },
     );
