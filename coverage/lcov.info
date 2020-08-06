@@ -17,6 +17,13 @@ DA:49,6
 LF:15
 LH:15
 end_of_record
+SF:lib/src/collection_consumer.dart
+DA:7,1
+DA:12,1
+DA:13,1
+LF:3
+LH:3
+end_of_record
 SF:lib/src/collection_provider.dart
 DA:12,1
 DA:18,1

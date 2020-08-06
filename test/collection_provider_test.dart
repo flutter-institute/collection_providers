@@ -17,23 +17,78 @@ void main() {
       expect(tester.takeException(), isA<ProviderNotFoundException>());
     });
 
-    testWidgets('rebuilds when notifyListeners is called', (tester) async {
-      final model = CollectionChangeNotifier();
-      final listener = expectAsync0(() {}, count: 2);
-      final widget = CollectionProvider.value(
-        value: model,
-        child: Builder(
-          builder: (context) {
-            CollectionProvider.of<CollectionChangeNotifier>(context);
-            return BuildDetector(listener);
-          },
-        ),
-      );
+    testWidgets(
+      'rebuilds when notifyListeners is called using Provider.of',
+      (tester) async {
+        final model = CollectionChangeNotifier();
+        final listener = expectAsync0(() {}, count: 2);
+        final widget = CollectionProvider.value(
+          value: model,
+          child: Builder(
+            builder: (context) {
+              CollectionProvider.of<CollectionChangeNotifier>(context);
+              return BuildDetector(listener);
+            },
+          ),
+        );
 
-      await tester.pumpWidget(widget);
-      model.notifyListeners();
-      await tester.pump();
-    });
+        await tester.pumpWidget(widget);
+        model.notifyListeners();
+        await tester.pump();
+      },
+    );
+
+    testWidgets(
+      'rebuilds when notifyListeners is called using context.watch',
+      (tester) async {
+        final model = CollectionChangeNotifier();
+        final listener = expectAsync0(() {}, count: 2);
+        final widget = CollectionProvider.value(
+          value: model,
+          child: Builder(
+            builder: (context) {
+              context.watch<CollectionChangeNotifier>();
+              return BuildDetector(listener);
+            },
+          ),
+        );
+
+        await tester.pumpWidget(widget);
+        model.notifyListeners();
+        await tester.pump();
+      },
+    );
+
+    testWidgets(
+      'rebuilds when notifyListeners is called using CollectionConsumer',
+      (tester) async {
+        final model = CollectionChangeNotifier();
+        final listener = expectAsync0(() {}, count: 2);
+        final widget = CollectionProvider.value(
+          value: model,
+          child: Builder(
+            builder: (context) {
+              return CollectionConsumer(
+                builder: (context, value, child) {
+                  return BuildDetector(listener);
+                },
+              );
+            },
+          ),
+        );
+
+        await tester.pumpWidget(widget);
+        model.notifyListeners();
+        await tester.pump();
+      },
+    );
+
+    test(
+      'throws an assertion error if there is no builder with CollectionConsumer',
+      () {
+        expect(() => CollectionConsumer(), throwsAssertionError);
+      },
+    );
 
     testWidgets('rebuilds once after pause', (tester) async {
       final model = CollectionChangeNotifier();
