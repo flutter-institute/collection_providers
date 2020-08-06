@@ -1,6 +1,9 @@
-language: dart
-dist: xenial
+language: flutter
+os:
+  - ubuntu
 sudo: false
+env:
+  - FLUTTER_CHANNEL="beta"
 addons:
   apt:
     packages:
