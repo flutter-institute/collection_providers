@@ -1,7 +1,9 @@
 name: collection_providers
 description: A group of pre-built providers the wrap the basic dart collections - list, set, map
-version: 0.0.1+1
+version: 0.0.1+2
 homepage: https://flutter.institute/
+repository: https://github.com/flutter-institute/collection_providers
+issue_tracker: https://github.com/flutter-institute/collection_providers/issues
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
