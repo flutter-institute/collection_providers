@@ -1,6 +1,10 @@
+## [0.1.0]
+
+* Null Safety implementation
+
 ## [0.0.1+2]
 
-- Minor changes to pubspec.yaml for Repo/Bugtracker meta data
+* Minor changes to pubspec.yaml for Repo/Bugtracker meta data
 
 ## [0.0.1+1]
 

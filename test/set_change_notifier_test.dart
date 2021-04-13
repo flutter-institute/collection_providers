@@ -82,11 +82,6 @@ void main() {
         expect(model, hasLength(3));
       });
 
-      test('throws assertion if addAll(null)', () {
-        final model = SetChangeNotifier();
-        expect(() => model.addAll(null), throwsAssertionError);
-      });
-
       test('notifies once for removeAll', () {
         final model = SetChangeNotifier({1, 2, 3});
         model.addListener(expectAsync0(() {}, count: 1));
@@ -94,11 +89,6 @@ void main() {
         model.removeAll([2, 3, 4]);
         expect(model, hasLength(1));
         expect(model, contains(1));
-      });
-
-      test('throws assertion if removeAll(null)', () {
-        final model = SetChangeNotifier();
-        expect(() => model.removeAll(null), throwsAssertionError);
       });
 
       test('notifies once for retainAll', () {
@@ -110,11 +100,6 @@ void main() {
         expect(model, containsAllInOrder([2, 4, 3]));
       });
 
-      test('throws assertion if retainAll(null)', () {
-        final model = SetChangeNotifier();
-        expect(() => model.retainAll(null), throwsAssertionError);
-      });
-
       test('notifies once for removeWhere', () {
         final model = SetChangeNotifier({1, 2, 3, 4, 5});
         model.addListener(expectAsync0(() {}, count: 1));
@@ -124,12 +109,6 @@ void main() {
         expect(model, containsAllInOrder([1, 2, 3]));
       });
 
-      test('throws assertion if removeWhere(null)', () {
-        final model = SetChangeNotifier();
-        // ignore: null_closures
-        expect(() => model.removeWhere(null), throwsAssertionError);
-      });
-
       test('notifies once for retainWhere', () {
         final model = SetChangeNotifier({1, 2, 3, 4, 5});
         model.addListener(expectAsync0(() {}, count: 1));
@@ -137,12 +116,6 @@ void main() {
         model.retainWhere((element) => element > 3);
         expect(model, hasLength(2));
         expect(model, containsAllInOrder([4, 5]));
-      });
-
-      test('throws assertion if retainWhere(null)', () {
-        final model = SetChangeNotifier();
-        // ignore: null_closures
-        expect(() => model.retainWhere(null), throwsAssertionError);
       });
 
       test('notifies once for clear', () {

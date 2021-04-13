@@ -22,7 +22,7 @@ void main() {
         test('invoking after dispose throws assertion', () {
           final model = getModel();
           model.dispose();
-          expect(() => model.addListener(null), throwsAssertionError);
+          expect(() => model.addListener(() {}), throwsAssertionError);
         });
 
         test('same listener returns normally', () {
@@ -37,7 +37,7 @@ void main() {
         test('invoking after dispose throws assertion', () {
           final model = getModel();
           model.dispose();
-          expect(() => model.removeListener(null), throwsAssertionError);
+          expect(() => model.removeListener(() {}), throwsAssertionError);
         });
 
         test(

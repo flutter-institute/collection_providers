@@ -10,11 +10,11 @@ class CollectionProvider<T extends CollectionChangeNotifier>
   ///
   /// `create` must not be `null`.
   CollectionProvider({
-    Key key,
-    @required Create<T> create,
-    bool lazy,
-    TransitionBuilder builder,
-    Widget child,
+    Key? key,
+    required Create<T> create,
+    bool? lazy,
+    TransitionBuilder? builder,
+    Widget? child,
   }) : super(
           key: key,
           create: create,
@@ -25,10 +25,10 @@ class CollectionProvider<T extends CollectionChangeNotifier>
 
   /// Provides an existing [ChangeNotifier].
   CollectionProvider.value({
-    Key key,
-    @required T value,
-    TransitionBuilder builder,
-    Widget child,
+    Key? key,
+    required T value,
+    TransitionBuilder? builder,
+    Widget? child,
   }) : super.value(
           key: key,
           builder: builder,

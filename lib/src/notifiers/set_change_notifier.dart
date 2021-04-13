@@ -4,11 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:collection_providers/collection_providers.dart';
 
 class SetChangeNotifier<T> extends CollectionChangeNotifier with SetMixin<T> {
-  Set<T> _set;
+  Set<T>? _set;
 
-  SetChangeNotifier([Set<T> backingSet]) {
-    _set = Set<T>.from(backingSet ?? {});
-  }
+  SetChangeNotifier([Set<T>? backingSet])
+      : _set = Set<T>.from(backingSet ?? {});
 
   /// Adds [value] to the set.
   /// Listeners are only notified if the set changes.
@@ -18,7 +17,7 @@ class SetChangeNotifier<T> extends CollectionChangeNotifier with SetMixin<T> {
   @override
   bool add(T value) {
     assert(_debugAssertNotDisposed());
-    final result = _set.add(value);
+    final result = _set!.add(value);
 
     // Only notify if things actually changed
     if (result) {
@@ -35,29 +34,28 @@ class SetChangeNotifier<T> extends CollectionChangeNotifier with SetMixin<T> {
   @override
   void addAll(Iterable<T> elements) {
     assert(_debugAssertNotDisposed());
-    assert(elements != null);
-    _set.addAll(elements);
+    _set!.addAll(elements);
     notifyListeners();
   }
 
   /// Returns `true` if [value] is in the set.
   @override
-  bool contains(Object element) {
+  bool contains(Object? element) {
     assert(_debugAssertNotDisposed());
-    return _set.contains(element);
+    return _set!.contains(element);
   }
 
   /// Provides an iterator that iterates over the elements of this set.
   @override
   Iterator<T> get iterator {
     assert(_debugAssertNotDisposed());
-    return _set.iterator;
+    return _set!.iterator;
   }
 
   @override
   int get length {
     assert(_debugAssertNotDisposed());
-    return _set.length;
+    return _set!.length;
   }
 
   /// If an object equal to [element] is in the set, return it.
@@ -65,9 +63,9 @@ class SetChangeNotifier<T> extends CollectionChangeNotifier with SetMixin<T> {
   /// Checks whether [element] is in the set, like [contains], and if so,
   /// returns the object in the set, otherwise returns `null`.
   @override
-  T lookup(Object element) {
+  T? lookup(Object? element) {
     assert(_debugAssertNotDisposed());
-    return _set.lookup(element);
+    return _set!.lookup(element);
   }
 
   /// Removes [value] from the set. Returns `true` if [value] was in the set.
@@ -76,9 +74,9 @@ class SetChangeNotifier<T> extends CollectionChangeNotifier with SetMixin<T> {
   /// Returns `false` otherwise. The method has no effect if [value] was not
   /// in the set.
   @override
-  bool remove(Object value) {
+  bool remove(Object? value) {
     assert(_debugAssertNotDisposed());
-    final result = _set.remove(value);
+    final result = _set!.remove(value);
 
     // Only notify if something changed
     if (result) {
@@ -90,10 +88,9 @@ class SetChangeNotifier<T> extends CollectionChangeNotifier with SetMixin<T> {
   /// Removes each element of [elements] from this set.
   /// Listeners are notified after all values have been removed.
   @override
-  void removeAll(Iterable<Object> elements) {
+  void removeAll(Iterable<Object?> elements) {
     assert(_debugAssertNotDisposed());
-    assert(elements != null);
-    _set.removeAll(elements);
+    _set!.removeAll(elements);
     notifyListeners();
   }
 
@@ -105,10 +102,9 @@ class SetChangeNotifier<T> extends CollectionChangeNotifier with SetMixin<T> {
   /// equal element in this set is retained, and elements that are not equal to
   /// any elements in [elements] are removed.
   @override
-  void retainAll(Iterable<Object> elements) {
+  void retainAll(Iterable<Object?> elements) {
     assert(_debugAssertNotDisposed());
-    assert(elements != null);
-    _set.retainAll(elements);
+    _set!.retainAll(elements);
     notifyListeners();
   }
 
@@ -117,8 +113,7 @@ class SetChangeNotifier<T> extends CollectionChangeNotifier with SetMixin<T> {
   @override
   void removeWhere(bool Function(T element) test) {
     assert(_debugAssertNotDisposed());
-    assert(test != null);
-    _set.removeWhere(test);
+    _set!.removeWhere(test);
     notifyListeners();
   }
 
@@ -127,8 +122,7 @@ class SetChangeNotifier<T> extends CollectionChangeNotifier with SetMixin<T> {
   @override
   void retainWhere(bool Function(T element) test) {
     assert(_debugAssertNotDisposed());
-    assert(test != null);
-    _set.retainWhere(test);
+    _set!.retainWhere(test);
     notifyListeners();
   }
 
@@ -137,7 +131,7 @@ class SetChangeNotifier<T> extends CollectionChangeNotifier with SetMixin<T> {
   @override
   void clear() {
     assert(_debugAssertNotDisposed());
-    _set.clear();
+    _set!.clear();
     notifyListeners();
   }
 
@@ -145,7 +139,7 @@ class SetChangeNotifier<T> extends CollectionChangeNotifier with SetMixin<T> {
   @override
   Set<T> toSet() {
     assert(_debugAssertNotDisposed());
-    return _set.toSet();
+    return _set!.toSet();
   }
 
   /// Discards the internal resources used by the object.

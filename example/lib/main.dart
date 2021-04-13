@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
+  MyHomePage({Key? key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -65,23 +65,20 @@ class _MyHomePageState extends State<MyHomePage> {
   void _onAdd(BuildContext context) async {
     if (_currentPage == 0) {
       final value = await _showTextDialog(context);
-      /* @@ */
-      print('New List Value: $value');
-      /* ## */
-      if (value != null && value.isNotEmpty) {
+      if (value.isNotEmpty) {
         CollectionProvider.of<ListChangeNotifier<String>>(context,
                 listen: false)
             .add(value);
       }
     } else if (_currentPage == 1) {
       final value = await _showTextDialog(context);
-      if (value != null && value.isNotEmpty) {
+      if (value.isNotEmpty) {
         CollectionProvider.of<SetChangeNotifier<String>>(context, listen: false)
             .add(value);
       }
     } else if (_currentPage == 2) {
       final value = await _showTextDialog(context);
-      if (value != null && value.isNotEmpty) {
+      if (value.isNotEmpty) {
         final customMapProvider =
             CollectionProvider.of<CustomMapChangeNotifier>(context,
                 listen: false);
@@ -112,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           actions: [
-            RaisedButton(
+            ElevatedButton(
               child: Text('Save'),
               onPressed: () {
                 var value = ctrl.text;
@@ -150,15 +147,15 @@ class _MyHomePageState extends State<MyHomePage> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            title: Text('List'),
+            label: 'List',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            title: Text('Set'),
+            label: 'Set',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.map),
-            title: Text('Map'),
+            label: 'Map',
           )
         ],
       ),

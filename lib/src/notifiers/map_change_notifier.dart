@@ -18,17 +18,16 @@ import 'package:collection_providers/collection_providers.dart';
 /// of [Object] and has no special requirements.
 class MapChangeNotifier<K, T> extends CollectionChangeNotifier
     with MapMixin<K, T> {
-  Map<K, T> _map;
+  Map<K, T>? _map;
 
-  MapChangeNotifier([Map<K, T> backingMap]) {
-    _map = Map<K, T>.from(backingMap ?? {});
-  }
+  MapChangeNotifier([Map<K, T>? backingMap])
+      : _map = Map<K, T>.from(backingMap ?? {});
 
   /// Returns the value for the given [key] or null if [key] is not in the map.
   @override
-  T operator [](Object key) {
+  T? operator [](Object? key) {
     assert(_debugAssertNotDisposed());
-    return _map[key];
+    return _map![key];
   }
 
   /// Associates the [key] with the given [value].
@@ -38,7 +37,7 @@ class MapChangeNotifier<K, T> extends CollectionChangeNotifier
   @override
   void operator []=(K key, T value) {
     assert(_debugAssertNotDisposed());
-    _map[key] = value;
+    _map![key] = value;
     notifyListeners();
   }
 
@@ -48,7 +47,7 @@ class MapChangeNotifier<K, T> extends CollectionChangeNotifier
   @override
   void clear() {
     assert(_debugAssertNotDisposed());
-    _map.clear();
+    _map!.clear();
     notifyListeners();
   }
 
@@ -61,7 +60,7 @@ class MapChangeNotifier<K, T> extends CollectionChangeNotifier
   @override
   Iterable<K> get keys {
     assert(_debugAssertNotDisposed());
-    return _map.keys;
+    return _map!.keys;
   }
 
   /// Removes [key] and its associated value, if present, from the map.
@@ -72,9 +71,9 @@ class MapChangeNotifier<K, T> extends CollectionChangeNotifier
   /// Note that values can be `null` and a returned `null` value doesn't
   /// always mean that the key was absent.
   @override
-  T remove(Object key) {
+  T? remove(Object? key) {
     assert(_debugAssertNotDisposed());
-    var removed = _map.remove(key);
+    var removed = _map!.remove(key);
     notifyListeners();
     return removed;
   }
@@ -90,8 +89,7 @@ class MapChangeNotifier<K, T> extends CollectionChangeNotifier
   @override
   void addAll(Map<K, T> other) {
     assert(_debugAssertNotDisposed());
-    assert(other != null);
-    _map.addAll(other);
+    _map!.addAll(other);
     notifyListeners();
   }
 
@@ -102,8 +100,7 @@ class MapChangeNotifier<K, T> extends CollectionChangeNotifier
   @override
   void updateAll(T Function(K key, T value) update) {
     assert(_debugAssertNotDisposed());
-    assert(update != null);
-    _map.updateAll(update);
+    _map!.updateAll(update);
     notifyListeners();
   }
 
@@ -118,8 +115,7 @@ class MapChangeNotifier<K, T> extends CollectionChangeNotifier
   @override
   void addEntries(Iterable<MapEntry<K, T>> newEntries) {
     assert(_debugAssertNotDisposed());
-    assert(newEntries != null);
-    _map.addEntries(newEntries);
+    _map!.addEntries(newEntries);
     notifyListeners();
   }
 
@@ -130,8 +126,7 @@ class MapChangeNotifier<K, T> extends CollectionChangeNotifier
   @override
   void removeWhere(bool Function(K key, T value) test) {
     assert(_debugAssertNotDisposed());
-    assert(test != null);
-    _map.removeWhere(test);
+    _map!.removeWhere(test);
     notifyListeners();
   }
 

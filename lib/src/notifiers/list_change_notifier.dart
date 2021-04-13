@@ -18,11 +18,10 @@ import 'package:collection_providers/collection_providers.dart';
 /// [T] is the type of the Value to be used by this map. It can be any subclass
 /// of [Object] and has no special requirements.
 class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
-  List<T> _list;
+  List<T>? _list;
 
-  ListChangeNotifier([List<T> backingList]) {
-    _list = List<T>.from(backingList ?? []);
-  }
+  ListChangeNotifier([List<T>? backingList])
+      : _list = List<T>.from(backingList ?? []);
 
   /// The number of objects in this list.
   ///
@@ -30,7 +29,7 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   @override
   int get length {
     assert(_debugAssertNotDisposed());
-    return _list.length;
+    return _list!.length;
   }
 
   /// Changes the length of this list.
@@ -40,7 +39,7 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   @override
   set length(int newLength) {
     assert(_debugAssertNotDisposed());
-    _list.length = newLength;
+    _list!.length = newLength;
   }
 
   /// Returns the object at the given [index] in the list
@@ -48,7 +47,7 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   @override
   T operator [](int index) {
     assert(_debugAssertNotDisposed());
-    return _list[index];
+    return _list![index];
   }
 
   /// Sets the value at the given [index] in the list to [value]
@@ -56,7 +55,7 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   @override
   void operator []=(int index, T value) {
     assert(_debugAssertNotDisposed());
-    _list[index] = value;
+    _list![index] = value;
     notifyListeners();
   }
 
@@ -69,6 +68,15 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
     notifyListeners();
   }
 
+  /// Adds `element` to the end of this list, extending the length by one.
+  /// Listeners are notified after the element is added
+  @override
+  void add(T element) {
+    assert(_debugAssertNotDisposed());
+    _list!.add(element);
+    notifyListeners();
+  }
+
   /// Appends all objects of [iterable] to the end of the list.
   /// Listeners are notified after all objects have been added.
   ///
@@ -76,8 +84,7 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   @override
   void addAll(Iterable<T> iterable) {
     assert(_debugAssertNotDisposed());
-    assert(iterable != null);
-    _list.addAll(iterable);
+    _list!.addAll(iterable);
     notifyListeners();
   }
 
@@ -88,8 +95,7 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   @override
   void removeWhere(bool Function(T element) test) {
     assert(_debugAssertNotDisposed());
-    assert(test != null);
-    _list.removeWhere(test);
+    _list!.removeWhere(test);
     notifyListeners();
   }
 
@@ -100,8 +106,7 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   @override
   void retainWhere(bool Function(T element) test) {
     assert(_debugAssertNotDisposed());
-    assert(test != null);
-    _list.retainWhere(test);
+    _list!.retainWhere(test);
     notifyListeners();
   }
 
@@ -111,18 +116,18 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   /// The [compare] function must act as a [Comparator].
   /// The default List implementations use [Comparable.compare] if [compare] is omitted.
   @override
-  void sort([int Function(T a, T b) compare]) {
+  void sort([int Function(T a, T b)? compare]) {
     assert(_debugAssertNotDisposed());
-    _list.sort(compare);
+    _list!.sort(compare);
     notifyListeners();
   }
 
   /// Shuffles the elements of this list randomly.
   /// Listeners are notified after shuffling is completed.
   @override
-  void shuffle([Random random]) {
+  void shuffle([Random? random]) {
     assert(_debugAssertNotDisposed());
-    _list.shuffle(random);
+    _list!.shuffle(random);
     notifyListeners();
   }
 
@@ -136,7 +141,7 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   @override
   void removeRange(int start, int end) {
     assert(_debugAssertNotDisposed());
-    _list.removeRange(start, end);
+    _list!.removeRange(start, end);
     notifyListeners();
   }
 
@@ -149,9 +154,9 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   /// `len` ist he list's `length`. The range starts at `start` and has length
   /// `end - start`. An empty range (with `end == start`) is valid.
   @override
-  void fillRange(int start, int end, [T fill]) {
+  void fillRange(int start, int end, [T? fill]) {
     assert(_debugAssertNotDisposed());
-    _list.fillRange(start, end, fill);
+    _list!.fillRange(start, end, fill);
     notifyListeners();
   }
 
@@ -175,8 +180,7 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   @override
   void setRange(int start, int end, Iterable<T> iterable, [int skipCount = 0]) {
     assert(_debugAssertNotDisposed());
-    assert(iterable != null);
-    _list.setRange(start, end, iterable, skipCount);
+    _list!.setRange(start, end, iterable, skipCount);
     notifyListeners();
   }
 
@@ -191,8 +195,7 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   @override
   void replaceRange(int start, int end, Iterable<T> newContents) {
     assert(_debugAssertNotDisposed());
-    assert(newContents != null);
-    _list.replaceRange(start, end, newContents);
+    _list!.replaceRange(start, end, newContents);
     notifyListeners();
   }
 
@@ -206,7 +209,7 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   @override
   void insert(int index, T element) {
     assert(_debugAssertNotDisposed());
-    _list.insert(index, element);
+    _list!.insert(index, element);
     notifyListeners();
   }
 
@@ -222,7 +225,7 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   @override
   T removeAt(int index) {
     assert(_debugAssertNotDisposed());
-    final result = _list.removeAt(index);
+    final result = _list!.removeAt(index);
     notifyListeners();
     return result;
   }
@@ -237,8 +240,7 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   @override
   void insertAll(int index, Iterable<T> iterable) {
     assert(_debugAssertNotDisposed());
-    assert(iterable != null);
-    _list.insertAll(index, iterable);
+    _list!.insertAll(index, iterable);
     notifyListeners();
   }
 
@@ -258,8 +260,7 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   @override
   void setAll(int index, Iterable<T> iterable) {
     assert(_debugAssertNotDisposed());
-    assert(iterable != null);
-    _list.setAll(index, iterable);
+    _list!.setAll(index, iterable);
     notifyListeners();
   }
 

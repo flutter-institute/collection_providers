@@ -18,7 +18,7 @@ void main() {
 
     // Input the text and clik the save button
     await tester.enterText(find.byType(TextField), name);
-    await tester.tap(find.byType(RaisedButton));
+    await tester.tap(find.byType(ElevatedButton));
     await tester.pumpAndSettle();
   }
 
