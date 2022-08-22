@@ -1,3 +1,7 @@
+## [0.2.0]
+
+* Dependency updates to latest versions
+
 ## [0.1.0]
 
 * Null Safety implementation

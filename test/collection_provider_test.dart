@@ -146,7 +146,7 @@ void main() {
 class BuildDetector extends StatelessWidget {
   final Function() onBuild;
 
-  BuildDetector(this.onBuild);
+  const BuildDetector(this.onBuild, [Key? key]) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

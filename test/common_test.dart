@@ -14,7 +14,7 @@ void main() {
     'SetChangeNotifier': () => SetChangeNotifier(),
   };
 
-  models.entries.forEach((element) {
+  for (var element in models.entries) {
     group('Common ${element.key}', () {
       CollectionChangeNotifier getModel() => element.value();
 
@@ -26,7 +26,7 @@ void main() {
         });
 
         test('same listener returns normally', () {
-          final listener = () {};
+          listener() {}
           final model = getModel();
           model.addListener(listener);
           expect(() => model.addListener(listener), returnsNormally);
@@ -34,12 +34,6 @@ void main() {
       });
 
       group('removeListener()', () {
-        test('invoking after dispose throws assertion', () {
-          final model = getModel();
-          model.dispose();
-          expect(() => model.removeListener(() {}), throwsAssertionError);
-        });
-
         test(
             'removing listeners while invoking does not invoke removed listener',
             () {
@@ -83,5 +77,5 @@ void main() {
         });
       });
     });
-  });
+  }
 }
