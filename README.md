@@ -1,6 +1,5 @@
 [![Codemagic build status](https://api.codemagic.io/apps/63335ebe0c4aebdcca5f20cb/63335ebe0c4aebdcca5f20ca/status_badge.svg)](https://codemagic.io/apps/63335ebe0c4aebdcca5f20cb/63335ebe0c4aebdcca5f20ca/latest_build)
 [![Pub Version](https://img.shields.io/pub/v/collection_providers)](https://pub.dev/packages/collection_providers)
-[![Coverage Status](https://coveralls.io/repos/github/flutter-institute/collection_providers/badge.svg?branch=master)](https://coveralls.io/github/flutter-institute/collection_providers?branch=master)
 
 A wrapper around [Provider](https://pub.dev/packages/provider) to add common dart collection providers for quick and easy use.
 
