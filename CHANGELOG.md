@@ -1,3 +1,7 @@
+## [0.2.0+1]
+
+* Removing Travis dependency and adding codemagic status
+
 ## [0.2.0]
 
 * Dependency updates to latest versions
