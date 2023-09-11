@@ -1,3 +1,7 @@
+## [0.2.1]
+
+* Updating depenencies and fixing minor formatting issue
+
 ## [0.2.0+1]
 
 * Removing Travis dependency and adding codemagic status

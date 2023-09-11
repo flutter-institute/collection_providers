@@ -10,8 +10,7 @@ class CollectionConsumer<T extends CollectionChangeNotifier>
       BuildContext context,
       T value,
       Widget? child,
-    )
-        builder,
+    ) builder,
     Widget? child,
   }) : super(key: key, builder: builder, child: child);
 }
