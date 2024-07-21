@@ -65,11 +65,41 @@ void main() {
         expect(model, containsAllInOrder([1, 4, 2, 3]));
       });
 
-      test('notifies when an element is removed', () {
+      test('notifies when an element is removed by value', () {
+        final model = ListChangeNotifier([1, 2, 3, 4]);
+        model.addListener(expectAsync0(() {}, count: 1));
+
+        final result = model.remove(2);
+        expect(result, isTrue);
+        expect(model, hasLength(3));
+        expect(model, containsAllInOrder([1, 3, 4]));
+      });
+
+      test('does not notify when removed element is not found', () {
+        final model = ListChangeNotifier([1, 2, 3]);
+        model.addListener(expectAsync0(() {}, count: 0));
+
+        final result = model.remove(4);
+        expect(result, isFalse);
+        expect(model, hasLength(3));
+        expect(model, containsAllInOrder([1, 2, 3]));
+      });
+
+      test('notifies when an element is removed at an index', () {
         final model = ListChangeNotifier([1, 2, 3]);
         model.addListener(expectAsync0(() {}, count: 1));
 
         model.removeAt(2);
+        expect(model, hasLength(2));
+        expect(model, containsAllInOrder([1, 2]));
+      });
+
+      test('notifies when the last element is removed', () {
+        final model = ListChangeNotifier([1, 2, 3]);
+        model.addListener(expectAsync0(() {}, count: 1));
+
+        final result = model.removeLast();
+        expect(result, equals(3));
         expect(model, hasLength(2));
         expect(model, containsAllInOrder([1, 2]));
       });

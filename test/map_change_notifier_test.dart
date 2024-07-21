@@ -64,6 +64,48 @@ void main() {
         expect(model, hasLength(1));
       });
 
+      test('notifies on putIfAbsent', () {
+        final model = MapChangeNotifier({'test': 'value'});
+        model.addListener(expectAsync0(() {}, count: 1));
+
+        final result = model.putIfAbsent('second', () => 'absent');
+        expect(result, equals('absent'));
+        expect(model, hasLength(2));
+        expect(model, containsPair('test', 'value'));
+        expect(model, containsPair('second', 'absent'));
+      });
+
+      test('does not notify on putIfAbsent if presenty', () {
+        final model = MapChangeNotifier({'test': 'value'});
+        model.addListener(expectAsync0(() {}, count: 0));
+
+        final result = model.putIfAbsent('test', () => 'absent');
+        expect(result, equals('value'));
+        expect(model, hasLength(1));
+      });
+
+      test('notifies on update', () {
+        final model = MapChangeNotifier({'test': 'value'});
+        model.addListener(expectAsync0(() {}, count: 1));
+
+        final result = model.update('test', (v) => 'updated $v');
+        expect(result, equals('updated value'));
+        expect(model, hasLength(1));
+        expect(model, containsPair('test', 'updated value'));
+      });
+
+      test('notifies on update if absent', () {
+        final model = MapChangeNotifier({'test': 'value'});
+        model.addListener(expectAsync0(() {}, count: 1));
+
+        final result = model.update('second', (v) => 'updated $v',
+            ifAbsent: () => 'absent');
+        expect(result, equals('absent'));
+        expect(model, hasLength(2));
+        expect(model, containsPair('test', 'value'));
+        expect(model, containsPair('second', 'absent'));
+      });
+
       test('notifies when a key is removed', () {
         final model = MapChangeNotifier({'test': 'value'});
         model.addListener(expectAsync0(() {}, count: 1));

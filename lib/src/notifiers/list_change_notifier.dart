@@ -88,6 +88,20 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
     notifyListeners();
   }
 
+  /// Removes the first occurrence of [value] from this list.
+  ///
+  /// Returns true if [value] was in the list, false otherwise.
+  /// The list must be growable.
+  @override
+  bool remove(Object? element) {
+    assert(_debugAssertNotDisposed());
+    final result = _list!.remove(element);
+    if (result) {
+      notifyListeners();
+    }
+    return result;
+  }
+
   /// Removes all objects from this list that satisfy [test].
   /// Listeners are notified after all objects have been removed.
   ///
@@ -226,6 +240,18 @@ class ListChangeNotifier<T> extends CollectionChangeNotifier with ListMixin<T> {
   T removeAt(int index) {
     assert(_debugAssertNotDisposed());
     final result = _list!.removeAt(index);
+    notifyListeners();
+    return result;
+  }
+
+  @override
+
+  /// Removes and returns the last object in this list.
+  ///
+  /// The list must be growable and non-empty.
+  T removeLast() {
+    assert(_debugAssertNotDisposed());
+    final result = _list!.removeLast();
     notifyListeners();
     return result;
   }
